@@ -1,30 +1,78 @@
 import React, { Component } from 'react';
 import Colaps from '../renders/Colaps'
-import '../index.css';
+import '../index.css'
+import icons from '../images/icons.png'
+
 class About extends Component{
+
+    // intaital state of the app
+    constructor(props){
+        super(props)
+        this.state = {
+            isLoading: true,
+            contacts: []
+        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    } 
+    
+    componentDidMount(){
+        this.fetchData();
+    }
+
+    fetchData(){
+        fetch('https://randomuser.me/api/?results=50&nat=us,dk,fr,gb')
+        .then(response => response.json())
+        .then(parsedJSON => parsedJSON.results.map(user => (
+        
+            {
+               
+                name: `${user.name.first} ${user.name.last}`,
+                username: `${user.login.username}`,
+                email: `${user.email}`,
+                location: `${user.location.street}, ${user.location.city}`
+            }
+
+        )))
+        .then(contacts => this.setState({
+            contacts,
+            isLoading: false
+        }))
+        .catch(error => console.log('parsing failed', error))
+
+    }
+
     render(){
-        return (
-            <div className="container">
+        const {isLoading, contacts} = this.state;
+    return (        
+        <div className="container">
         <div className="card1">
+        <header>
+            <img src={icons} /> 
+            <h3>Fetching Data <button className="btn btn-sm-danger">Fetch Now</button> </h3>
+        </header>                                                                                             
+        <div className={`content ${isLoading ? `is_loading` : ''}`}>
+        <div className="panel-group">
 
-                <div className="panel-group">
-                    <Colaps title="Overview">
-                        <p>The email confirmation should contain a unique URL that a user simply needs to click in order to confirm his/her account. Ideally, the URL should look something like this - http://yourapp.com/confirm/ The key here is the id We are going to encode the user email (along with a timestamp) in the id using the itsdangerous package.
-                        he email confirmation should contain a unique URL that a user simply needs to click in order to confirm his/her account. Ideally, the URL should look something like this - http://yourapp.com/confirm/ The key here is the id We are going to encode the user email (along with a timestamp) in the id using the itsdangerous package
-
-                        </p>
+            {
+                !isLoading && contacts.length > 0 ? contacts.map(contact =>{
+                    const {username, name, email, location} = contact
+                    return <Colaps key={contact.username} title={name}>
+                    <p>{email}<br/> {location}</p>
+                    <br/>
+                    
                     </Colaps>
-                    <Colaps title="Features">
-                        <p>The email confirmation should contain a unique URL that a user simply needs to click in order to confirm his/her account. Ideally, the URL should look something like this - http://yourapp.com/confirm/ The key here is the id We are going to encode the user email (along with a timestamp) in the id using the itsdangerous package.</p>
-                    </Colaps>
-                    <Colaps title="Software">
-                        <p>The email confirmation should contain a unique URL that a user simply needs to click in order to confirm his/her account. Ideally, the URL should look something like this - http://yourapp.com/confirm/ The key here is the id We are going to encode the user email (along with a timestamp) in the id using the itsdangerous package.</p>
-                    </Colaps>
-                    </div>
-                </div>
+        
+                }) : null
+            }
+        </div>
+     <div className="loader">
+            <div className="icon">
             </div>
+        </div>
+    </div>
+</div>
+</div>
 
-        )
+    )
     }
 }
 export default About
