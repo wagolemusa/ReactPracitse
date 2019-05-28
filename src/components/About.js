@@ -13,7 +13,7 @@ class About extends Component{
             contacts: []
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
     } 
-
+    // this get data from localstorage to contacts
     componentWillMount(){
         localStorage.getItem('contacts') && this.setState({
             contacts: JSON.parse(localStorage.getItem('contacts')),
@@ -21,6 +21,7 @@ class About extends Component{
         })
     }
     
+    // This I Calculate  timesteamp from localStorege and fetch data if  >= 1 minute
     componentDidMount(){
         const date = localStorage.getItem('contactsDate');
         const contactsDate = date && new Date(parseInt(date));
@@ -35,11 +36,13 @@ class About extends Component{
         }
     }
 
+    //  This asign localStorage to grab data and keep it in localStorage
     componentWillUpdate(nextProps, nextState){
         localStorage.setItem('contacts', JSON.stringify(nextState.contacts));
         localStorage.setItem('contactsDate', Date.now());
     }
 
+    // This  Fetch all the data from the APIs url
     fetchData(){
         this.setState({
             isLoading: true,
