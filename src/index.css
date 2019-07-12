@@ -94,3 +94,17 @@ code {
     transform-origin: center center;
   }
 }
+
+
+.github-profile{
+  margin: 1ren;
+
+}
+.info{
+  display: inline-block;
+  margin-left: 12px;
+
+}
+img{
+  width: 85px;
+}

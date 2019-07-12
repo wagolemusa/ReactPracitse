@@ -5,6 +5,7 @@ import Home from './components/Home'
 import Contact from './components/Contact';
 import About from './components/About';
 import  Post from './components/Post';
+import Fetch from './components/Fetch';
 
 class App extends Component {
 
@@ -18,6 +19,7 @@ class App extends Component {
             <Route exact path='/' component={Home} />
             <Route path='/about' component={About} />
             <Route path='/contact' component={Contact} />
+            <Route path='/fetch' component={Fetch} />
             <Route path="/:post_id" component={Post} />
           </Switch>
           </div>
