@@ -13,7 +13,7 @@ class About extends Component{
             contacts: []
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
     } 
-
+    // this get data from localstorage to contacts
     componentWillMount(){
         localStorage.getItem('contacts') && this.setState({
             contacts: JSON.parse(localStorage.getItem('contacts')),
@@ -21,20 +21,34 @@ class About extends Component{
         })
     }
     
+    // This I Calculate  timesteamp from localStorege and fetch data if  >= 1 minute
     componentDidMount(){
-        if(!localStorage.getItem('contacts')){
+        const date = localStorage.getItem('contactsDate');
+        const contactsDate = date && new Date(parseInt(date));
+        const now = new Date();
+        const dataAge = Math.round((now - contactsDate) / (1000 * 60)); // in munites
+        const tooOld = dataAge >= 1;
+
+        if(tooOld){
             this.fetchData();
         } else{
-            console.log('Using data from localstorage')
+            console.log(`Using data from localstorage that are ${dataAge} minutes old`)
         }
     }
 
+    //  This asign localStorage to grab data and keep it in localStorage
     componentWillUpdate(nextProps, nextState){
         localStorage.setItem('contacts', JSON.stringify(nextState.contacts));
         localStorage.setItem('contactsDate', Date.now());
     }
 
+    // This  Fetch all the data from the APIs url
     fetchData(){
+        this.setState({
+            isLoading: true,
+            contacts: []
+        })
+
         fetch('https://randomuser.me/api/?results=50&nat=us,dk,fr,gb')
         .then(response => response.json())
         .then(parsedJSON => parsedJSON.results.map(user => (
@@ -63,7 +77,9 @@ class About extends Component{
         <div className="card1">
         <header>
             <img src={icons} /> 
-            <h3>Fetching Data <button className="btn btn-sm-danger">Fetch Now</button> </h3>
+            <h3>Fetching Data <button className="btn btn-sm-danger" onClick={(e) => {
+                this.fetchData();
+            }}>Fetch Now</button> </h3>
         </header>                                                                                             
         <div className={`content ${isLoading ? `is_loading` : ''}`}>
         <div className="panel-group">
