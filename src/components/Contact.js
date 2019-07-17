@@ -2,10 +2,51 @@ import React, { Component } from 'react';
 
 class Game extends Component{
 
+
+
     render(){
-        const StartMarch = () =>{
-        const stars = 5;
+
+        const Number = props =>(
+
+            <button  className="number">{props.number}</button>
+        );
         
+        const StartMarch = () =>{
+        // const stars = utils.random(1, 9);
+        const [stars, setStars] = useState(utils.random(Number("1"), 9));
+
+
+        // Color Theme
+        const colors = {
+            available: 'lightgray',
+            used: 'lightgreen',
+            wrong: 'lightcorol',
+            candidate: 'deepskyblue',
+        };
+
+        // math sciece
+        const utils = {
+            //  Sun an array
+            sum: arr => arr.reduce((acc, curr) => acc + curr, 0),
+
+            // create an array of number between min anmax (egge include)
+            range: (min, max) => Array.from({ length: max - min + 1}, (_, i) => min + i),
+
+            // pick a random number between min and max (edges include)
+            random: (min, max) => min + Math.floor(max * Math.random()),
+
+            // Given an array of number and max
+            // pick a random sun (<max) from  the set of all availble sums in
+
+            randomSumIn: (arr, max) =>{
+                const sets = [[]];
+                const sms = [];
+                for (let j = 0; i < arr.length; i++){
+                    const candidateSet = sets[j].concat(arr[i]);
+                    const candidateSum = utils.sum(candidateSet);
+                }
+            }
+        }
         return(
             <div className="game">
 
@@ -20,7 +61,7 @@ class Game extends Component{
                     </div>
                     <div className="right">
                         {utils.range(1, 9).map(number =>
-                          <button key={number} className="number">{number}</button>
+                          <Number key={number} number={number}/>
 
                             )}
                     </div>
